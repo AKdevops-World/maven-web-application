@@ -3,7 +3,7 @@ pipeline {
 
     tools {
         // Defines tools to be used in the pipeline, e.g., Maven
-        jdk 'java 17'
+        jdk 'Java 17'
         maven 'maven 3.9.11' // 'M3' should be configured as a Maven installation in Jenkins Global Tool Configuration
     }
 

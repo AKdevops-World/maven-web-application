@@ -27,7 +27,7 @@ pipeline {
                 // Copies the generated WAR file to the Tomcat webapps directory
                 // Replace 'your-tomcat-server-ip' and '/opt/tomcat/webapps/' with your actual values
                 // Ensure SSH access and necessary permissions are configured on the Tomcat server
-                sh 'scp target/*.war admin@192.168.0.107:/opt/tomcat/webapps/'
+                deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: '06e7186b-b72e-4aed-8d13-a556b67128b8', path: '', url: 'http://192.168.0.107:9090/')], contextPath: '/myapp', war: '**/*.war'
             }
         }
     }

@@ -3,7 +3,7 @@ name: CI with Docker Build and Push
 on:
   push:
     branches:
-      - main  # Adjust this if your main branch has a different name
+      - master  # Adjust this if your main branch has a different name
 
 jobs:
   build-and-push-docker-image:

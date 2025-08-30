@@ -11,19 +11,13 @@ COPY src ./src
 # Build the Maven project, skipping tests
 RUN mvn clean package -DskipTests
 
-# Use a lean base image to run the application
-FROM openjdk:17-jdk-slim
+# Use an official Tomcat image to run the web application
+FROM tomcat:9-jdk17-temurin-focal
 
-# Set the working directory
-WORKDIR /app
+# Copy the .war file from the build stage into Tomcat's webapps directory
+COPY --from=build /app/target/maven-web-application.war /usr/local/tomcat/webapps/
 
-# Copy the JAR file from the build stage with a specific name
-# Replace 'maven-web-application-1.0-SNAPSHOT.jar' with the exact name of your JAR file
-# (You can find this name by running 'mvn package' locally)
-COPY --from=build /app/target/maven-web-application-1.0-SNAPSHOT.jar app.jar
-
-# Expose the port your application listens on (e.g., 8080)
+# Expose the default Tomcat port
 EXPOSE 8080
 
-# Command to run the application
-CMD ["java", "-jar", "app.jar"]
+# The CMD is handled by the Tomcat base image

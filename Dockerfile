@@ -17,8 +17,10 @@ FROM openjdk:17-jdk-slim
 # Set the working directory
 WORKDIR /app
 
-# Copy the JAR file from the build stage
-COPY --from=build /app/target/*.jar app.jar
+# Copy the JAR file from the build stage with a specific name
+# Replace 'maven-web-application-1.0-SNAPSHOT.jar' with the exact name of your JAR file
+# (You can find this name by running 'mvn package' locally)
+COPY --from=build /app/target/maven-web-application-1.0-SNAPSHOT.jar app.jar
 
 # Expose the port your application listens on (e.g., 8080)
 EXPOSE 8080

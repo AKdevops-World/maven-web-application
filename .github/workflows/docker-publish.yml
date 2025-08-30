@@ -3,7 +3,7 @@ name: CI with Docker Build and Push
 on:
   push:
     branches:
-      - master # Change this to your main branch name if different
+      - main  # Adjust this if your main branch has a different name
 
 jobs:
   build-and-push-docker-image:
@@ -18,6 +18,8 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          # This line enables caching for Maven dependencies.
+          # If you see a caching error, you can comment it out.
           cache: 'maven'
 
       - name: Build with Maven

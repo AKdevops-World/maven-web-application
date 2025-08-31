@@ -12,9 +12,7 @@ jobs:
     steps:
       - name: Checkout repository for building
         uses: actions/checkout@v4
-        with:
-          # Use your new PAT secret to allow write access
-          token: ${{ secrets.PAT_WITH_WRITE_ACCESS }}
+        # We don't need to pass the token here because we will use it explicitly later
       
       - name: Set up short SHA as image tag
         id: vars
@@ -44,5 +42,6 @@ jobs:
           git add MavenWebApplication.yaml
           git commit -m "chore: Update image tag to ${{ env.SHA_TAG }}"
           
-          # Now, push using the PAT for authentication
-          git push https://${{ secrets.PAT_WITH_WRITE_ACCESS }}@github.com/AKdevops-World/maven-web-application.git
+          # Now, push using the PAT for authentication. 
+          # This is the new, more explicit command.
+          git push https://x-access-token:${{ secrets.PAT_WITH_WRITE_ACCESS }}@github.com/AKdevops-World/maven-web-application.git

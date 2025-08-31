@@ -3,16 +3,23 @@ name: CI with Docker Build and Push
 on:
   push:
     branches:
-      - master  # Adjust this if your main branch has a different name
+      - master
 
 jobs:
   build-and-push-docker-image:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repository for building
         uses: actions/checkout@v4
-
+        with:
+          # A token is needed to push changes back to the repo
+          token: ${{ secrets.GITHUB_TOKEN }} 
+      
+      - name: Set up short SHA as image tag
+        id: vars
+        run: echo "SHA_TAG=$(echo ${{ github.sha }} | cut -c1-8)" >> $GITHUB_ENV
+        
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -24,4 +31,16 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/maven-web-application:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/maven-web-application:${{ env.SHA_TAG }}
+
+      - name: Update Kubernetes manifest with new image tag
+        run: |
+          # Use sed to replace the PLACEHOLDER with the new image tag
+          sed -i "s|maven-web-application:PLACEHOLDER|maven-web-application:${{ env.SHA_TAG }}|g" MavenWebApplication.yaml
+          
+          # Stage, commit, and push the changes back to the repository
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add MavenWebApplication.yaml
+          git commit -m "chore: Update image tag to ${{ env.SHA_TAG }}"
+          git push

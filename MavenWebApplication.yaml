@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: maven-web-app-container
-        image: demoak93/maven-web-application:PLACEHOLDER
+        image: demoak93/maven-web-application:b9bc087f
         imagePullPolicy: Always
         ports:
         - containerPort: 8080

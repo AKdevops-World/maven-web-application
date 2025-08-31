@@ -1,29 +1,22 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: webpage-deployment
-  namespace: production
+  name: maven-web-app-deployment
+  namespace: test-ns
 spec:
   replicas: 2
-  revisionHistoryLimit: 5
   selector:
     matchLabels:
-      application: webpage
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
-  minReadySeconds: 30
+      app: java-web-app
   template:
     metadata:
-      name: webpage-pod
       labels:
-        application: webpage
+        app: java-web-app
     spec:
       containers:
-      - name: webpage-container
-        image: mithuntechnologies/maven-web-application:1
+      - name: maven-web-app-container
+        image: demoak93/maven-web-application:PLACEHOLDER
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
@@ -31,12 +24,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: webpage-service
-  namespace: production
+  name: maven-web-app-service
+  namespace: test-ns
 spec:
   type: NodePort
   selector:
-    application: webpage
+    app: java-web-app
   ports:
-  - port: 80
-    targetPort: 8080
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30007 # This port will be used to access the service from outside the cluster

@@ -3,11 +3,11 @@ name: CI Build and Push to Quay.io
 on:
   push:
     branches:
-      - master # Ensure this matches your branch name
+      - master # Make sure this matches your repository's branch name
 
 jobs:
   build_and_push:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # The type of machine to run the job on
 
     steps:
       - name: Checkout repository
@@ -16,16 +16,16 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Log in to Quay.io (HARDCODED)
+      - name: Log in to Quay.io
         uses: docker/login-action@v3
         with:
           registry: quay.io
-          username: demoak93+mavenwebapp # Replace with your full robot username
-          password: CRA9OCSOMZJ1RNZCHBSOMNBPMSJVY4F7UO3WPQJ1UFZUBF92B3SDATJ0V2Z4HJA2 # Replace with your actual token
+          username: ${{ secrets.QUAY_USERNAME }}
+          password: ${{ secrets.QUAY_TOKEN }}
 
-      - name: Build and Push Docker image to Quay.io (HARDCODED)
+      - name: Build and Push Docker image to Quay.io
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: quay.io/demoak93+mavenwebapp/mavenwebapp:latest # Replace with your full robot username
+          tags: quay.io/${{ secrets.QUAY_USERNAME }}/mavenwebapp:latest

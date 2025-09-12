@@ -1,4 +1,4 @@
-# Use a Maven base image to build the application
+# Use a Maven base image to build the application.
 FROM maven:3.8-openjdk-17-slim AS build
 
 # Set the working directory inside the container

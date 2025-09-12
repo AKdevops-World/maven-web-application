@@ -54,3 +54,14 @@ jobs:
       - name: Show file content after update
         run: |
           cat gitops_repo/deployment.yaml
+
+      # Step 5: Commit and push the changes to the GitOps repository
+      # This step is missing from your provided workflow
+      - name: Commit and push updated deployment
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          cd gitops_repo # Change to the GitOps repository directory
+          git add deployment.yaml
+          git commit -m "chore: Update mavenwebapp image tag to ${{ github.sha }}"
+          git push

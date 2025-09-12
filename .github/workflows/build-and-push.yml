@@ -7,7 +7,7 @@ on:
 
 jobs:
   build_and_push:
-    runs-on: ubuntu-latest # The type of machine to run the job on
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -24,8 +24,7 @@ jobs:
           password: ${{ secrets.QUAY_TOKEN }}
 
       - name: Build and Push Docker image to Quay.io
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: quay.io/${{ secrets.QUAY_USERNAME }}/mavenwebapp:latest
+        run: |
+          docker buildx build --push \
+            --tag quay.io/${{ secrets.QUAY_USERNAME }}/mavenwebapp:latest \
+            .

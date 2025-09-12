@@ -1,5 +1,5 @@
 pipeline {
-    agent any // Specifies that the pipeline can run on any available agent.
+    agent any // Specifies that the pipeline can run on any available agent
 
     tools {
         // Defines tools to be used in the pipeline, e.g., Maven

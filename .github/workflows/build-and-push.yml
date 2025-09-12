@@ -25,20 +25,21 @@ jobs:
           username: ${{ secrets.QUAY_USERNAME }}
           password: ${{ secrets.QUAY_TOKEN }}
 
-      # --- Change this step to use the GitHub SHA as the tag ---
+      # Corrected build step:
+      # Use `demoak93` for the image path, not the full robot account name
       - name: Build and Push Docker image to Quay.io
         run: |
           docker buildx build --push \
-            --tag quay.io/${{ secrets.QUAY_USERNAME }}/mavenwebapp:latest \
-            --tag quay.io/${{ secrets.QUAY_USERNAME }}/mavenwebapp:${{ github.sha }} \
+            --tag quay.io/demoak93/mavenwebapp:latest \
+            --tag quay.io/demoak93/mavenwebapp:${{ github.sha }} \
             .
 
-      # --- This is the new part to update the GitOps repo ---
+      # --- New part to update the GitOps repo ---
       - name: Checkout GitOps repository
         uses: actions/checkout@v4
         with:
           repository: AKdevops-World/mavenwebapp-gitops
-          token: ${{ secrets.GIT_OPS_TOKEN }} # Use a PAT with write access
+          token: ${{ secrets.GIT_OPS_TOKEN }}
 
       - name: Update image tag in deployment.yaml
         run: |

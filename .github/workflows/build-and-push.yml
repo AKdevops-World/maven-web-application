@@ -3,7 +3,7 @@ name: CI Build and Push to Quay.io
 on:
   push:
     branches:
-      - main # This workflow will run every time you push to the 'main' branch
+      - master # This workflow will run every time you push to the 'main' branch
 
 jobs:
   build_and_push:

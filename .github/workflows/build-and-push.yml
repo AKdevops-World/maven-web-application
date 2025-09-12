@@ -3,7 +3,7 @@ name: CI Build and Push to Quay.io
 on:
   push:
     branches:
-      - master # This workflow will run every time you push to the 'main' branch
+      - master # Make sure this matches your repository's branch name
 
 jobs:
   build_and_push:
@@ -24,8 +24,7 @@ jobs:
           password: ${{ secrets.QUAY_TOKEN }}
 
       - name: Build and Push Docker image to Quay.io
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: quay.io/${{ secrets.QUAY_USERNAME }}/mavenwebapp:latest
+        run: |
+          docker buildx build --push \
+            --tag quay.io/${{ secrets.QUAY_USERNAME }}/mavenwebapp:latest \
+            .

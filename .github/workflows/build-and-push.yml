@@ -43,17 +43,14 @@ jobs:
           path: gitops_repo
 
       # Step 4: Update the image tag in the deployment file
-      # The correct path is now `gitops_repo/deployment.yaml`
+      - name: Show file content before update
+        run: |
+          cat gitops_repo/deployment.yaml
+
       - name: Update image tag in deployment.yaml
         run: |
           sed -i 's|image: quay.io/demoak93/mavenwebapp:.*|image: quay.io/demoak93/mavenwebapp:${{ github.sha }}|' gitops_repo/deployment.yaml
 
-      # Step 5: Commit and push the changes to the GitOps repository
-      - name: Commit and push updated deployment
+      - name: Show file content after update
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          cd gitops_repo # Change to the GitOps repository directory
-          git add deployment.yaml
-          git commit -m "chore: Update mavenwebapp image tag to ${{ github.sha }}"
-          git push
+          cat gitops_repo/deployment.yaml

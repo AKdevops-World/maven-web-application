@@ -48,4 +48,4 @@ jobs:
       # Step 4: Update the image tag in the deployment file
       - name: Update image tag in deployment.yaml
         run: |
-          sed -i 's|image: quay.io/demoak93/mavenwebapp:.*|image: quay.io/demoak93/mavenwebapp:${{ github.sha }}|' gitops_repo/k8s/deployment
+          sed -i 's|image: quay.io/demoak93/mavenwebapp:.*|image: quay.io/demoak93/mavenwebapp:${{ github.sha }}|' gitops_repo/k8s/deployment.yaml

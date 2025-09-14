@@ -35,7 +35,7 @@ jobs:
         with:
           registry: quay.io
           username: ${{ secrets.QUAY_USERNAME }}   # e.g. demoak93+kubernetes
-          password: ${{ secrets.QUAY_PASSWORD }}   # robot account token
+          password: ${{ secrets.QUAY_TOKEN }}   # robot account token
 
       # Build and push Docker image
       - name: Build and Push Docker image

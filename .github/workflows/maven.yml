@@ -10,11 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout application repo (this repo)
+      # Checkout application repo
       - name: Checkout application repo
         uses: actions/checkout@v4
 
-      # Setup JDK 17 for Maven build
+      # Setup JDK 17
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
@@ -41,20 +41,20 @@ jobs:
           docker push $IMAGE
           echo "IMAGE=$IMAGE" >> $GITHUB_ENV
 
-      # Checkout GitOps repo (mavenwebapp-gitops)
+      # Checkout GitOps repo
       - name: Checkout GitOps repo
         uses: actions/checkout@v4
         with:
           repository: AKdevops-World/mavenwebapp-gitops
-          token: ${{ secrets.git-ops-pusher }}   # Use your PAT secret here
+          token: ${{ secrets.git-ops-pusher }}   # ✅ Required, must be set
           path: gitops
 
-      # Update deployment.yaml with new image tag
+      # Update deployment.yaml
       - name: Update deployment.yaml
         run: |
           sed -i "s|quay.io/demoak93/mavenwebapp:.*|${IMAGE}|g" gitops/deployment.yaml
 
-      # Commit and push changes to GitOps repo
+      # Commit and push changes
       - name: Commit and Push changes
         run: |
           cd gitops

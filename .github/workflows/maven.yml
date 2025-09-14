@@ -27,13 +27,17 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
-      # Log in to Quay.io
+      # Debug (optional) - check repo path
+      - name: Debug Quay image path
+        run: echo "Will push image to quay.io/demoak93/mavenwebapp"
+
+      # Log in to Quay.io with robot account
       - name: Log in to Quay.io
         uses: docker/login-action@v3
         with:
           registry: quay.io
-          username: ${{ secrets.QUAY_USERNAME }}
-          password: ${{ secrets.QUAY_TOKEN }}
+          username: ${{ secrets.QUAY_USERNAME }}   # e.g. demoak93+kubernetes
+          password: ${{ secrets.QUAY_TOKEN }}   # robot account token
 
       # Build and push Docker image
       - name: Build and Push Docker image
@@ -42,5 +46,5 @@ jobs:
           context: .
           push: true
           tags: |
-            quay.io/${{ secrets.QUAY_USERNAME }}/mavenwebapp:latest
-            quay.io/${{ secrets.QUAY_USERNAME }}/mavenwebapp:${{ github.sha }}
+            quay.io/demoak93/mavenwebapp:latest
+            quay.io/demoak93/mavenwebapp:${{ github.sha }}

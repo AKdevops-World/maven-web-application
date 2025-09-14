@@ -3,7 +3,7 @@ name: Build, Push and Update GitOps
 on:
   push:
     branches:
-      - main
+      - master
 
 permissions:
   contents: write   # allow pushing changes to gitops repo

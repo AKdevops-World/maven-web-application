@@ -41,15 +41,25 @@ jobs:
           docker push $IMAGE
           echo "IMAGE=$IMAGE" >> $GITHUB_ENV
 
-      # Checkout GitOps repo (mavenwebapp-gitops)
+      # Checkout GitOps repo
       - name: Checkout GitOps repo
         uses: actions/checkout@v4
         with:
           repository: AKdevops-World/mavenwebapp-gitops
-          token: ${{ secrets.GIT_OPS_PUSHER }}   # ✅ your PAT secret
+          token: ${{ secrets.GIT_OPS_PUSHER }}   # PAT secret
           path: gitops
 
-      # Update deployment.yaml with new image
+      # Update deployment.yaml (replace only the tag)
       - name: Update deployment.yaml
         run: |
-          sed -i "s|quay.io/demoak93/mavenwebapp:.*|${IMAGE}|g" gitops*
+          sed -i "s|\(quay.io/demoak93/mavenwebapp:\).*|\1${GITHUB_SHA}|g" gitops/deployment.yaml
+
+      # Commit and push changes
+      - name: Commit and Push changes
+        run: |
+          cd gitops
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add deployment.yaml
+          git commit -m "Update image to quay.io/demoak93/mavenwebapp:${GITHUB_SHA}"
+          git push origin master
